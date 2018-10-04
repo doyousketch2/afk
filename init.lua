@@ -1,12 +1,12 @@
 
 print( '[afk]  CSM loading...' )
 
-awaymessage  = "I'm AFK, try again later."
+local awaymessage  = "I'm AFK, try again later."
 
-playername  = ''
-nicknames  = {}
-pings  = {}
-afk  = false
+local playername  = ''
+local nicknames  = {}
+local pings  = {}
+local afk  = false
 
 --  https://raw.githubusercontent.com/minetest/minetest/master/doc/client_lua_api.txt
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,13 +76,31 @@ minetest .register_on_connect(
       function() -- inner
         playername  = minetest .localplayer :get_name()
         table.insert( nicknames, '#000000,' ..playername )
+        print( '[afk] playername ||' ..playername ..'||' )
 
-        lowercase  = string.lower( playername )
+        local lowercase  = string.lower( playername )
         if lowercase ~= playername then
           table.insert( nicknames, '#000000,' ..lowercase )
+          print( '[afk] lowercase ||' ..lowercase ..'||' )
         end
 
-        print( '[afk] playername ||' ..playername ..'||' )
+        local lastchar  = #playername
+        while tonumber( playername :sub(lastchar) )
+          and lastchar > 1 do
+            lastchar  = lastchar -1
+        end
+        local stripped  = string.sub( playername, 1, lastchar )
+        if stripped ~= playername then
+          table.insert( nicknames, '#000000,' ..stripped )
+          print( '[afk] stripped ||' ..stripped ..'||' )
+        end
+
+        local lowerstrip  = string.lower( stripped )
+        if lowerstrip ~= playername
+          and lowerstrip ~= lowercase then
+            table.insert( nicknames, '#000000,' ..lowerstrip )
+            print( '[afk] lowerstrip ||' ..lowerstrip ..'||' )
+        end
 
         local M1  = minetest .colorize( '#BBBBBB', '[afk] CSM loaded, type ' )
         local M2  = minetest .colorize( '#FFFFFF', '.afk ' )
