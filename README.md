@@ -7,4 +7,5 @@ Auto responder when you're Away From Keyboard, while playing Minetest
 
 ToDo:  
 - [ ] custom response message  
+- [ ] keep a list of who tried to message you, while you were away  
 - [ ] menu, so you can add common nicknames  
