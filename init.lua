@@ -62,6 +62,7 @@ minetest .register_on_formspec_input(
 
     elseif fields .close then
       afk  = false
+      print('[afk] CSM: returned')
     end
 
   end
@@ -119,6 +120,7 @@ minetest .register_chatcommand( 'afk',
   {
     func  = function(param)
       afk  = true
+      print('[afk] CSM: away')
       show_main_dialog()
     end,
   }
