@@ -37,21 +37,23 @@ minetest .register_on_receiving_chat_messages(
 
   local msg  = minetest .strip_colors(message)
 
-    if afk and msg :find( playername ) then
+    for name = 1, #nicknames do
+      if afk and msg :find( nicknames[name] ) then
 
-      if msg :sub( 1 ) == '<' then  --  normal message
-        sender  = msg :sub( 2, msg :find( '>' -1 ) )
-        table.insert( pings, '#000000,' ..sender )
+        if msg :sub( 1 ) == '<' then  --  normal message
+          sender  = msg :sub( 2, msg :find( '>' -1 ) )
+          table.insert( pings, '#000000,' ..sender )
 
-      -- elseif  'player did some action'  then...
-      end
+        -- elseif  'player did some action'  then...
+        end
 
-      print( '[afk] found playername' )
-      minetest .send_chat_message( awaymessage )
-      show_main_dialog()
-    end
+        print( '[afk] found playername' )
+        minetest .send_chat_message( awaymessage )
+        show_main_dialog()
+      end  -- if afk
 
-  end
+    end  -- for name
+  end  -- function(message)
 )
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,7 +67,7 @@ minetest .register_on_formspec_input(
       print('[afk] CSM: returned')
     end
 
-  end
+  end  -- function( formname, fields )
 )
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -73,7 +75,7 @@ minetest .register_on_formspec_input(
 minetest .register_on_connect(
   function() -- outer
     -- delay a moment for Minetest to initialize
-    minetest .after( 5,
+    minetest .after( 1,
       function() -- inner
         playername  = minetest .localplayer :get_name()
         table.insert( nicknames, '#000000,' ..playername )
@@ -109,7 +111,7 @@ minetest .register_on_connect(
         minetest .display_chat_message( M1..M2..M3 )
 
       end  -- function() -- inner
-    )  -- .after(5)
+    )  -- .after(1)
 
   end  -- function() -- outer
 )  -- .register_on_connect()
@@ -122,7 +124,7 @@ minetest .register_chatcommand( 'afk',
       afk  = true
       print('[afk] CSM: away')
       show_main_dialog()
-    end,
+    end
   }
 )
 
