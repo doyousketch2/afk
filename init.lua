@@ -1,6 +1,8 @@
 
 print( '[afk]  CSM loading...' )
 
+local player1name  = ''
+
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 local function show_main_dialog()
@@ -59,4 +61,3 @@ minetest .register_chatcommand( 'afk',
 )
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
