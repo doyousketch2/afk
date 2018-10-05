@@ -19,15 +19,16 @@ ToDo:
 
 
 unzip in your **/minetest/clientmods/** folder  
-rename folder so it just says **afk** instead of *afk-master*  
+> rename folder so it just says **afk** instead of *afk-master*  
 
 open your mods.conf file in notepad++  
-or any other text editor that respects unix line endings.  
-add the line `load_mod_afk = true`  
+> or any other text editor that respects unix line endings.  
+> add the line **load_mod_afk = true**  
+> save and close that file
 
 if you haven't enabled CSM's yet:
-> save and close that file, then go up one folder level  
+> in your file explorer, go up one folder level  
 > so you're now in your **/minetest/** directory  
-> look for your `minetest.conf` file  
-> if you don't have the line `enable_client_modding = true` then add it  
+> look for your **minetest.conf** file  
+> if you don't have the line **enable_client_modding = true** then add it  
 > save and exit.  enjoy minetest.  
