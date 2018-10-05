@@ -8,6 +8,8 @@ local nicknames  = {}
 local pings  = {}
 local afk  = false
 
+--  https://raw.githubusercontent.com/minetest/minetest/stable-0.4/doc/client_lua_api.md
+
 --  https://raw.githubusercontent.com/minetest/minetest/master/doc/client_lua_api.txt
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -17,13 +19,13 @@ local function show_main_dialog()
     ..'label[0.1,0;Away From Keyboard]'
     ..'button_exit[5.8,0.2;2.2,0.2;close;Close]'
 
-    ..'tableoptions[background=#314D4F]'
-    ..'tablecolumns[color;text,align=center,width=10]'
+    ..'tableoptions[color=#000000;background=#314D4F]'
+    ..'tablecolumns[text]'
     ..'table[0,1;7.8,2.5;nick_list;'
   formspec  = formspec ..table .concat( nicknames, ',' ) ..';]'
 
-    ..'tableoptions[background=#314D4F]'
-    ..'tablecolumns[color;text,align=center,width=10]'
+    ..'tableoptions[color=#000000;background=#314D4F]'
+    ..'tablecolumns[text]'
     ..'table[0,4;7.8,3.8;ping_list;'
   formspec  = formspec ..table .concat( pings, ',' ) ..';]'
 
@@ -35,21 +37,25 @@ end
 minetest .register_on_receiving_chat_messages(
   function(message)
 
-  local msg  = minetest .strip_colors(message)
+    local msg  = minetest .strip_colors(message)
 
-    for name = 1, #nicknames do
-      if afk and msg :find( nicknames[name] ) then
+    for nn = 1, #nicknames do
+      if afk and msg :find( nicknames[nn] ) then
 
-        if msg :sub( 1 ) == '<' then  --  normal message
-          sender  = msg :sub( 2, msg :find( '>' -1 ) )
-          table.insert( pings, '#000000,' ..sender )
+        if msg :sub( 1, 1 ) == '<' then  --  normal message
+          local sender  = msg :sub( 2,  msg :find( '>' ) -1 )
+
+          if sender ~= playername then
+            print( '[afk] msg from: ' ..sender )
+            table.insert( pings, sender )
+
+            minetest .send_chat_message( awaymessage )
+            show_main_dialog()
+          end
 
         -- elseif  'player did some action'  then...
-        end
+        end  -- if msg :sub
 
-        print( '[afk] found playername' )
-        minetest .send_chat_message( awaymessage )
-        show_main_dialog()
       end  -- if afk
 
     end  -- for name
@@ -75,15 +81,15 @@ minetest .register_on_formspec_input(
 minetest .register_on_connect(
   function() -- outer
     -- delay a moment for Minetest to initialize
-    minetest .after( 1,
+    minetest .after( 3,
       function() -- inner
         playername  = minetest .localplayer :get_name()
-        table.insert( nicknames, '#000000,' ..playername )
+        table.insert( nicknames, playername )
         print( '[afk] playername ||' ..playername ..'||' )
 
         local lowercase  = string.lower( playername )
         if lowercase ~= playername then
-          table.insert( nicknames, '#000000,' ..lowercase )
+          table.insert( nicknames, lowercase )
           print( '[afk] lowercase ||' ..lowercase ..'||' )
         end
 
@@ -94,14 +100,14 @@ minetest .register_on_connect(
         end
         local stripped  = string.sub( playername, 1, lastchar )
         if stripped ~= playername then
-          table.insert( nicknames, '#000000,' ..stripped )
+          table.insert( nicknames, stripped )
           print( '[afk] stripped ||' ..stripped ..'||' )
         end
 
         local lowerstrip  = string.lower( stripped )
         if lowerstrip ~= playername
           and lowerstrip ~= lowercase then
-            table.insert( nicknames, '#000000,' ..lowerstrip )
+            table.insert( nicknames, lowerstrip )
             print( '[afk] lowerstrip ||' ..lowerstrip ..'||' )
         end
 
