@@ -7,17 +7,18 @@ Auto responder, for when you're Away From Keyboard, while playing Minetest
 - [x] keep a list of who tried to message you, while you were away  
 - [x] menu, so you can add common nicknames  
 
-ToDo:  
-- [ ] custom response messages  
-  kinda~sorta already implimented...  
-  random list you can edit in the *init.lua* file.  
-  might make a menu for it  
-
 - [x] known limitations:  
   you can't use this with another CSM that has custom message responses.  
-  it appears minetest only allows one instance of  *.register_on_receiving_chat_messages()*
+  it appears minetest only allows one instance of  *.register_on_receiving_chat_messages()*  
+  so it won't work with my friendly_chat CSM, or another one that colors chat    
+  but I'll probably merge the functions, so all this code will end up in that one  
 
+ToDo:  
+- [ ] custom response messages  
+  kinda~sorta already implimented, might make a menu for it  
+  there's a random list you can easily edit in the *init.lua* file.  
 
+**Install:**  
 unzip in your **/minetest/clientmods/** folder  
 > rename folder so it just says **afk** instead of *afk-master*  
 
