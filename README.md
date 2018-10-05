@@ -9,7 +9,7 @@ Completed:
 - [x] menu, so you can add common nicknames  
 - [x] save nicknames  
 - [x] first AFK response will be in-game chat for all to see  
-- [x] further responses will be /msg'd back to player  
+- [x] any further responses will be /msg'd back to player  
  
 known limitations:  
 - [ ] you can't use this with another CSM that has custom message responses.  
