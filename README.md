@@ -4,8 +4,10 @@
 **afk**  
 Auto responder, for when you're Away From Keyboard, while playing Minetest
 
+- [x] keep a list of who tried to message you, while you were away  
+- [x] menu, so you can add common nicknames  
 
 ToDo:  
-- [ ] custom response message  
-- [ ] keep a list of who tried to message you, while you were away  
-- [ ] menu, so you can add common nicknames  
+- [ ] custom response messages  
+  kinda~sorta already implimented.  
+  random list you can edit in the *init.lua* file.  might make a menu for it
