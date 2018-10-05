@@ -32,6 +32,6 @@ open your mods.conf file in notepad++
 if you haven't enabled CSM's yet:
 > in your file explorer, go up one folder level  
 > so you're now in your **/minetest/** directory  
-> look for your **minetest.conf** file and open it in notepad++ or whatev's  
+> look for your **minetest.conf** file and open it in notepad++ or similar  
 > if you don't have the line **enable_client_modding = true** then add it  
 > save and exit.  enjoy minetest.  
