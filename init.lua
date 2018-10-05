@@ -36,6 +36,12 @@ local last_msg_from  = ''
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+--  https://raw.githubusercontent.com/minetest/minetest/stable-0.4/doc/client_lua_api.md
+
+--  https://raw.githubusercontent.com/minetest/minetest/master/doc/client_lua_api.txt
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 local mod_storage  = minetest .get_mod_storage()
 
 --  uncomment next line to PRINT out the contents of [afk] mod_storage.
@@ -46,14 +52,17 @@ local mod_storage  = minetest .get_mod_storage()
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
---  https://raw.githubusercontent.com/minetest/minetest/stable-0.4/doc/client_lua_api.md
+--  initialize random number generator
+math .randomseed( minetest .get_us_time() )
+math .random();  math .random();  math .random()
+local random  = math .random( #awaymessages )
 
---  https://raw.githubusercontent.com/minetest/minetest/master/doc/client_lua_api.txt
+-- print between ||'s to verify length of variable
+local function bracket( title,  variable )
+  print( '[afk] '..title ..' ||' ..variable ..'||' )
+end
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-math .randomseed( minetest .get_us_time() )
-math.random(); math.random(); math.random()
 
 local function show_main_dialog()
   local formspec  = 'size[12,8]'
@@ -95,7 +104,6 @@ minetest .register_on_receiving_chat_messages(
             print( '[afk] msg: ' ..msg )
             table.insert( pings, msg )
 
-            local random  = math.random( #awaymessages )
             while random == prev_random do
               random  = math.random( #awaymessages )
             end
@@ -121,12 +129,6 @@ minetest .register_on_receiving_chat_messages(
     end  -- for name
   end  -- function(message)
 )
-
---~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-local function bracket( title,  variable )
-  print( '[afk] '..title ..' ||' ..variable ..'||' )
-end
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -240,9 +242,19 @@ minetest .register_chatcommand( 'afk',
     func  = function(param)
       afk  = true
       print('[afk] CSM: away')
+
+      while random == prev_random do
+        random  = math.random( #awaymessages )
+      end
+      local awaymessage  = awaymessages[ random ]
+
+      minetest .send_chat_message( awaymessage )
+      prev_random  = random
+
       show_main_dialog()
     end
   }
 )
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
