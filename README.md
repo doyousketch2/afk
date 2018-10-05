@@ -41,4 +41,4 @@ if you haven't enabled CSM's yet:
 ## to use  
 bring up text with t or f10,  then type `.afk` to see main window  
 type in any other nicknames you might commonly encounter  
-go about your buisness, and return to a window of notes  
+go about your buisness, and return to a window full of notes  
