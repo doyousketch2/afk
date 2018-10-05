@@ -35,3 +35,8 @@ if you haven't enabled CSM's yet:
 > look for your **minetest.conf** file and open it in notepad++ or similar  
 > if you don't have the line **enable_client_modding = true** then add it  
 > save and exit.  enjoy minetest.  
+
+## to use  
+bring up text with t or f10,  then type `.afk` to see main window  
+type in any other nicknames you might commonly encounter  
+go about your buisness, and return to a window of notes  
