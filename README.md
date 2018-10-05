@@ -25,7 +25,7 @@ unzip in your **/minetest/clientmods/** folder
 > rename folder so it just says **afk** instead of *afk-master*  
 
 open your mods.conf file in notepad++  
-> or any other text editor that respects unix line endings.  
+> or any other text editor that respects unix line-endings.  
 > add the line **load_mod_afk = true**  
 > save and close that file
 
