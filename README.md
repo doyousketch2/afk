@@ -15,7 +15,7 @@ known limitations:
 - [ ] you can't use this with another CSM that has custom message responses.  
   it appears minetest only allows one instance of  *.register_on_receiving_chat_messages()*  
   so it won't work with my [friendly_chat] CSM, or another one that colors chat.    
-  I'll probably merge the functions, so all this code will end up in [friendly_chat]  
+  I'll likely merge the functions, so all this code will end up in [friendly_chat]  
 
 Todo:  
 - [ ] custom response messages  
