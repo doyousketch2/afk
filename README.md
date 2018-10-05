@@ -5,9 +5,11 @@
 Auto responder, for when you're Away From Keyboard, while playing Minetest
 
 Completed:
-- [x] keep a list of who tried to message you, while you were away
-- [x] menu, so you can add common nicknames
-- [x] save nicknames
+- [x] keep a list of who tried to message you, while you were away  
+- [x] menu, so you can add common nicknames  
+- [x] save nicknames  
+- [x] first AFK response will be in-game chat for all to see  
+- [x] further responses will be /msg'd back to player  
  
 known limitations:  
 - [ ] you can't use this with another CSM that has custom message responses.  
