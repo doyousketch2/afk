@@ -17,6 +17,9 @@ ToDo:
 - [ ] custom response messages  
   kinda~sorta already implimented, might make a menu for it  
   there's a random list you can easily edit in the *init.lua* file.  
+- [ ] save nicknames  
+  should be easy enough.  thing is, half the players out there have alts  
+  so I have to make sure the mod_storage keeps track of that  
 
 ## Install:  
 unzip in your **/minetest/clientmods/** folder  
