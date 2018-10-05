@@ -30,7 +30,19 @@ local pings  = {}
 local afk  = false
 local index  = ''
 local selected  = ''
+local savednames  = ''
 local prev_random  = ''
+local last_msg_from  = ''
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+local mod_storage  = minetest .get_mod_storage()
+
+--  uncomment next line to PRINT out the contents of [afk] mod_storage.
+--print( dump( mod_storage :to_table() ))
+
+--  WARNING:  uncomment the next line to COMPLETELY CLEAR [afk] mod_storage, if need be.
+--mod_storage :from_table()
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -73,8 +85,8 @@ minetest .register_on_receiving_chat_messages(
     local msg  = minetest .strip_colors(message)
     local found  = false
 
-    for nn = 1, #nicknames do
-      if afk and not found and msg :find( nicknames[nn] ) then
+    for na = 1, #nicknames do
+      if afk and not found and msg :find( nicknames[na] ) then
 
         if msg :sub( 1, 1 ) == '<' then  --  normal message
           local sender  = msg :sub( 2,  msg :find( '>' ) -1 )
@@ -88,8 +100,14 @@ minetest .register_on_receiving_chat_messages(
               random  = math.random( #awaymessages )
             end
             local awaymessage  = awaymessages[ random ]
-            minetest .send_chat_message( awaymessage )
-            prev_random = random
+            if sender == last_msg_from then
+              whisper  = '/msg ' ..sender ..' ' ..awaymessage
+              minetest .send_chat_message( whisper )
+            else
+              minetest .send_chat_message( awaymessage )
+            end
+            prev_random  = random
+            last_msg_from  = sender
 
             show_main_dialog()
             found  = true
@@ -103,6 +121,12 @@ minetest .register_on_receiving_chat_messages(
     end  -- for name
   end  -- function(message)
 )
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+local function bracket( title,  variable )
+  print( '[afk] '..title ..' ||' ..variable ..'||' )
+end
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -133,6 +157,8 @@ minetest .register_on_formspec_input(
       table.insert( nicknames,  newname )
       print( '[afk] CSM added: ' ..newname )
 
+      local na  = table .concat( nicknames, ' ' )
+      mod_storage :set_string( playername, na )
       minetest .after(  0.1,  function() show_main_dialog() end  )
 
     elseif fields .remove and index > 1 then
@@ -155,32 +181,46 @@ minetest .register_on_connect(
     minetest .after( 3,
       function() -- inner
         playername  = minetest .localplayer :get_name()
-        table.insert( nicknames, playername )
-        print( '[afk] playername ||' ..playername ..'||' )
 
-        local lowercase  = string.lower( playername )
-        if lowercase ~= playername then
-          table.insert( nicknames, lowercase )
-          print( '[afk] lowercase ||' ..lowercase ..'||' )
-        end
+    xpcall(  function() savednames  = mod_storage :get_string( playername ) end, 
+             function() savednames  = '' end  )
 
-        local lastchar  = #playername
-        while tonumber( playername :sub(lastchar) )
-          and lastchar > 1 do
-            lastchar  = lastchar -1
-        end
-        local stripped  = string.sub( playername, 1, lastchar )
-        if stripped ~= playername then
-          table.insert( nicknames, stripped )
-          print( '[afk] stripped ||' ..stripped ..'||' )
-        end
+        if savednames ~= '' then  -- every na between space
+          for na in string.gmatch( savednames, '%S+' ) do
+            table.insert( nicknames, na )
+          end
 
-        local lowerstrip  = string.lower( stripped )
-        if lowerstrip ~= playername
-          and lowerstrip ~= lowercase then
-            table.insert( nicknames, lowerstrip )
-            print( '[afk] lowerstrip ||' ..lowerstrip ..'||' )
-        end
+        else
+          table.insert( nicknames, playername )
+          bracket( 'playername', playername )
+
+          local lowercase  = string.lower( playername )
+          if lowercase ~= playername then
+            table.insert( nicknames, lowercase )
+            bracket( 'lowercase', lowercase )
+          end
+
+          local lastchar  = #playername
+          while tonumber( playername :sub(lastchar) )
+            and lastchar > 1 do
+              lastchar  = lastchar -1
+          end
+          local stripped  = string.sub( playername, 1, lastchar )
+          if stripped ~= playername then
+            table.insert( nicknames, stripped )
+            bracket( 'stripped', stripped )
+          end
+
+          local lowerstrip  = string.lower( stripped )
+          if lowerstrip ~= playername
+            and lowerstrip ~= lowercase then
+              table.insert( nicknames, lowerstrip )
+              bracket( 'lowerstrip', lowerstrip )
+          end
+
+          local nn  = table .concat( nicknames, ' ' )
+          mod_storage :set_string( playername, nn )
+        end  -- savednames
 
         local M1  = minetest .colorize( '#BBBBBB', '[afk] CSM loaded, type ' )
         local M2  = minetest .colorize( '#FFFFFF', '.afk ' )
