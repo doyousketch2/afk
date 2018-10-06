@@ -2,7 +2,7 @@
 
 
 ## afk  
-Auto responder, for when you're Away From Keyboard, while playing Minetest
+Auto responder CSM, for when you're Away From Keyboard, while playing Minetest
 
 Completed:
 - [x] keep a list of who tried to message you, while you were away  
